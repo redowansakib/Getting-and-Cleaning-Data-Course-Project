@@ -1,9 +1,8 @@
-setwd(r"(D:\Coursera Data Science Course\Getting and Cleaning Data\Assignment)")
+# setwd(r"(D:\Coursera Data Science Course\Getting and Cleaning Data\Assignment)")
 
-library(dplyr)
-library(tidyr)
-library(stringr)
+
 library(reshape2)
+library(stringr)
 
 features <- read.delim(r"(UCI HAR Dataset\features.txt)",header=FALSE)[[1]] |>
   as.character()
@@ -34,7 +33,7 @@ X2 <- X[grepl("(mean|std)",features)]
 names(X2) <-str_replace_all(names(X2), c("\\d+ "="",
                                          "^t"="Time ",
                                          "f|Freq"="Frequency ",
-                                         "Acc" = " Acceleration",
+                                         "Acc" = " Acceleration ",
                                          "Mag" = " Magnitude ",
                                          "mean"="Mean ",
                                          "std" = "Standard Deviation ",
@@ -46,17 +45,18 @@ names(X2) <-str_replace_all(names(X2), c("\\d+ "="",
 
 df <- cbind(subject,apply(X2, 2, as.numeric),activity_labels)
 
+df_split_by_sub <- split(df,subject)
+
+reshape <- function(df) { 
+  df |> melt(id = c("subject","activity_labels"), variable.name = "measures") |>  
+    dcast(measures~activity_labels,mean,na.rm = TRUE)
+}
+
+final_output <- lapply(df_split_by_sub, reshape)
+
+final_output
 
 
-sample <-split(df,subject)[[1]]
-colMeans(sample[2])
-dcast(sample,activity_labels~names(X2), print,value.var = names(X2))
-aggregate(names(X2)~activity_labels,sample,mean)
-a <- melt(sample,id = c("subject","activity_labels"), variable.name = "measures")
-b<-dcast(a, measures~subject+activity_labels,mean,na.rm = TRUE)
-str(b)
 
-X_train2 <- read.delim(r"(UCI HAR Dataset\train\X_train.txt)", header=FALSE)
-a <- apply(X_train2, 2, trimws) 
-b <- apply(a, 2, function(x) gsub("  "," ",x))
-str(a)
+
+
