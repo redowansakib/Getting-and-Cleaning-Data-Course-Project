@@ -36,6 +36,10 @@ variable names:
 Transformations:
 
 First features.txt were loaded in `features` variable as character vector. Then subject_train.txt and subject_test.txt were loaded in `subject_train` and `subject_test` and merged into `subject`. Similarly y_train.txt and y_test.txt were loaded into `y_train` and `y_test` and merged into `y`. X_train.txt and X_test.txt contained somewhat messy data and so they were first trimed of whitespaces with `trimws()` and got their double space replaced by single space by `gsub()` and finally separated on the basis of single space by `separate`. Then activity_labels.txt were loaded and mapped to `y` into `activity_labels`. `X2` were created to contain a subset of `X` that contain only mean and standard deviation variables. then names of `X2` were fixed to reflect a more descriptive information. `df` was made to contain all the cleaned data together and splited into 30 parts according to the subject into  `df_split_by_sub`. Then a function `reshape` were made to transfrom each split to reshape into a form where it contained average of each variable for each activity.
+<<<<<<< HEAD
 finally the finction were mapped to every split and contained into final output.
+=======
+    finally the finction were mapped to every split and contained into final output.
+>>>>>>> 316a7c162d3d7da259043490adc4ecd504c6e4a1
     
 
